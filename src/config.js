@@ -12,6 +12,11 @@ if (!Number.isInteger(port) || port < 1 || port > 65535) {
   throw new Error('Configuração inválida: PORT deve ser um número inteiro entre 1 e 65535.');
 }
 
+const trustProxyValue = process.env.TRUST_PROXY;
+if (trustProxyValue !== undefined && !['true', 'false'].includes(trustProxyValue)) {
+  throw new Error('Configuração inválida: TRUST_PROXY deve ser "true" ou "false".');
+}
+
 const sql = {
   server: process.env.AZURE_SQL_SERVER,
   database: process.env.AZURE_SQL_DATABASE,
@@ -34,6 +39,7 @@ if (dbProvider === 'sqlserver') {
 
 module.exports = {
   port,
+  trustProxy: trustProxyValue === 'true',
   environment: process.env.APP_ENV || 'development',
   dbProvider,
   sqlitePath: path.resolve(root, process.env.SQLITE_PATH || './data/loja.db'),

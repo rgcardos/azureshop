@@ -173,6 +173,18 @@ function loadConfig(overrides) {
   } finally { fs.rmSync(cwd, { recursive: true, force: true }); }
 }
 
+test('TRUST_PROXY é opcional e validado', () => {
+  assert.equal(loadConfig({ TRUST_PROXY: 'true' }).status, 0);
+  assert.equal(loadConfig({ TRUST_PROXY: 'false' }).status, 0);
+  const invalid = loadConfig({ TRUST_PROXY: 'talvez' });
+  assert.notEqual(invalid.status, 0);
+  assert.match(invalid.stderr, /TRUST_PROXY/);
+});
+
+test('trust proxy fica desligado por padrão', () => {
+  assert.equal(createApp(repository()).get('trust proxy'), false);
+});
+
 test('configuração aceita valores padrão e configurações válidas do App Service', () => {
   assert.equal(loadConfig({}).status, 0);
   assert.equal(loadConfig({ PORT: '8080' }).status, 0);
