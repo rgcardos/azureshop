@@ -9,6 +9,12 @@ variable "resource_group_name" {
   type        = string
 }
 
+variable "location" {
+  description = "Regiao dos recursos novos; a politica da assinatura nega East US."
+  type        = string
+  default     = "brazilsouth"
+}
+
 variable "suffix" {
   description = "Sufixo minusculo alfanumerico para os nomes globais novos de ACR e AKS."
   type        = string

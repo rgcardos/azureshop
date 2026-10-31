@@ -1,7 +1,7 @@
 locals {
   tags = {
-    project       = "azureshop"
-    company      = "highexpert"
+    project = "azureshop"
+    company = "highexpert"
     managed = "terraform"
   }
 
@@ -51,7 +51,7 @@ module "container_registry" {
   source              = "./modules/container-registry"
   count               = var.deploy_acr ? 1 : 0
   resource_group_name = data.azurerm_resource_group.portal.name
-  location            = data.azurerm_resource_group.portal.location
+  location            = var.location
   tags                = local.tags
   acr_name            = local.acr_name
   sku                 = var.acr_sku
@@ -61,7 +61,7 @@ module "aks" {
   source              = "./modules/aks"
   count               = var.deploy_aks ? 1 : 0
   resource_group_name = data.azurerm_resource_group.portal.name
-  location            = data.azurerm_resource_group.portal.location
+  location            = var.location
   tags                = local.tags
   aks_name            = local.aks_name
   node_count          = var.aks_node_count
